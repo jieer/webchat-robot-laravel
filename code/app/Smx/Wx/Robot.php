@@ -3,6 +3,7 @@
 namespace App\Smx\Wx;
 /**
 *Author @nango
+*Author @qingyuan
 *
 *  封装的网页版微信通讯类
 * 参考文章http://www.tanhao.me/talk/1466.html/
@@ -38,6 +39,7 @@ class Robot {
 	
     function cookiejar()
     {
+        is_dir(storage_path('/cookies/')) || mkdir(storage_path('/cookies/'), 0777, true); 
         return storage_path('/cookies/cookie');
     }
     /**
@@ -187,10 +189,9 @@ class Robot {
         	return $info;//这里是设置个错误信息的反馈
         }
 
-        file_put_contents('/tmp/content.txt', $content."\n\n", FILE_APPEND);
          
         //正则匹配出wxuin、wxsid
-        preg_match('/wxuin=;/iU', $content, $uin); 
+        preg_match('/wxuin=(.*);/iU', $content, $uin); 
         preg_match('/wxsid=(.*);/iU', $content, $sid);
         preg_match('/webwx_data_ticket=(.*);/iU', $content, $webwx);
         //@TODO将wxuin、wxsid、webwx_data_ticket存入cookies，以便获取微信头像----暂无效 
@@ -200,9 +201,8 @@ class Robot {
 		  }
 		}*/
         //将wxuin、wxsid、webwx_data_ticket存入session
-        if (empty($uid)) {
+        if (empty($uin)) {
             preg_match('/<wxuin>(.*)<\/wxuin>/iU', $content, $uin); 
-            file_put_contents('/tmp/content.txt', var_export($content, 1)."\n\n", FILE_APPEND);
         }
         session('uin', @$uin[1]);
         session('sid', @$sid[1]);
