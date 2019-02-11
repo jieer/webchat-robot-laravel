@@ -10,7 +10,6 @@ class RobotController extends Controller {
     {
         $wechat = new Robot();
         //获取用户uin 和 sid
-        session_start();
         $url = $request->input('url');
         $wxinfo = $wechat->getCookies($url);
         $wxinfo['status'] = 1;
@@ -110,7 +109,6 @@ class RobotController extends Controller {
         $wechat = new Robot();
         $act = $request->input('act', 'index');
 
-        session_start();
         //登录页
         $uuid = $wechat->getUuid();
         $qrcode = "https://login.weixin.qq.com/qrcode/{$uuid}?t=webwx";
@@ -118,5 +116,3 @@ class RobotController extends Controller {
     }
 }
 
-
-?>
