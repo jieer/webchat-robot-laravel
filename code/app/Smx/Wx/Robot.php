@@ -238,6 +238,7 @@ class Robot {
 		$res = $this->post($url, json_encode($data), $cookie_jar);
 		//将登陆用户username、nickname存入session中
 		$user = json_decode($res, true);
+        file_put_contents('/tmp/wxinit.log', "LOGINUSER = ".var_export($user, 1)."\n\n", FILE_APPEND);
 		session('username', $user['User']['UserName']);
 		session('nickname', $user['User']['NickName']);
 
@@ -261,6 +262,7 @@ class Robot {
 		}
 		
 		$res = $this->post($url, '{}',$cookie_jar);
+        file_put_contents('/tmp/wxcontact.log', "CONTACT = ".var_export($res, 1)."\n\n", FILE_APPEND);
 		return $res;
 	}
 
@@ -287,6 +289,7 @@ class Robot {
 		$data['SyncKey'] = json_decode($synckey);
 		$data['rr'] = time();
 		$res = $this->post($url, json_encode($data),$cookie_jar);
+        file_put_contents('/tmp/wxmsg.log', "WXSYNC = ".var_export($res, 1)."\n\n", FILE_APPEND);
 		return $res;
 	}
 
@@ -331,7 +334,7 @@ class Robot {
 	public function  getAvatar($uri = ''){
 		$url = "https://wx.qq.com".$uri;
 		$res = $this->get($url);
-		echo $res;
+		return $res;
 		}
 
 	/**

@@ -13,6 +13,7 @@ class RobotController extends Controller {
         $url = $request->input('url');
         $wxinfo = $wechat->getCookies($url);
         $wxinfo['status'] = 1;
+        //uin, sid
 
         return json_encode($wxinfo);
     }
@@ -84,7 +85,7 @@ class RobotController extends Controller {
         $uri = $request->input('uri');
         $res = $wechat->getAvatar($uri);
         header('Content-Type: image/jpeg');
-        imagejpeg($res);
+        echo $res;
     }
     public function tuling(Request $request)
     {
